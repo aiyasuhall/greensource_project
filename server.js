@@ -75,7 +75,7 @@ app.post('/api/login', (req, res) => {
     db.get("SELECT * FROM users WHERE username = ? AND password = ?", [username, password], (err, row) => {
         if (err) return res.status(500).json({ error: err.message });
         if (row) res.json({ success: true, role: row.role, username: row.username });
-        else res.status(401).json({ success: false, message: "Sai thông tin đăng nhập" });
+        else res.status(401).json({ success: false, message: "Wrong login information!" });
     });
 });
 
@@ -84,8 +84,8 @@ app.post('/api/register', (req, res) => {
     const role = 'user';
     db.run(`INSERT INTO users (username, password, role, email, phone) VALUES (?, ?, ?, ?, ?)`, 
         [username, password, role, email, phone], function(err) {
-        if (err) return res.status(500).json({ success: false, message: "Username đã tồn tại" });
-        res.json({ success: true, message: "Đăng ký thành công!" });
+        if (err) return res.status(500).json({ success: false, message: "Username already existed!" });
+        res.json({ success: true, message: "Register successfully!" });
     });
 });
 
@@ -203,7 +203,7 @@ app.post('/api/optimize', (req, res) => {
     
     db.all(`SELECT id, name, default_price as price, default_quality as quality, default_time as time, default_capacity as capacity FROM suppliers`, [], (err, providers) => {
         if (err) return res.status(500).json({ error: err.message });
-        if (providers.length === 0) return res.status(400).json({ error: "Chưa có dữ liệu nhà cung cấp!" });
+        if (providers.length === 0) return res.status(400).json({ error: "No data from suppliers!" });
 
         // --- BƯỚC 1: TÍNH TOÁN TOPSIS ---
 
