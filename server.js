@@ -15,7 +15,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // KẾT NỐI DATABASE
 const dbPath = path.resolve(__dirname, 'supplier_eval.db');
 const db = new sqlite3.Database(dbPath, (err) => {
-    if (err) console.error('Lỗi kết nối DB:', err.message);
+    if (err) console.error('Error connecting to DB:', err.message);
     else {
         console.log('Connected to SQLite Database.');
         initializeDB();
@@ -40,7 +40,7 @@ function initializeDB() {
                 const stmt = db.prepare("INSERT INTO users (username, password, role, email, phone) VALUES (?, ?, ?, ?, ?)");
                 stmt.run("admin", "admin123", "admin", "admin@green.com", "0909000111");
                 stmt.finalize();
-                console.log("Admin mặc định: admin/admin123");
+                console.log("Default Admin: admin/admin123");
             }
         });
 
